@@ -5,3 +5,7 @@ exports.gettingAllPosts = function(req, res) {
         res.send(posts);
     });
 };
+
+exports.getAllUsersPref = function(req, res) {
+    res(dataService.getAllUsersPref());
+}

@@ -2,6 +2,7 @@ var postsModel = require('../models/post.model.js');
 var autherModel = require('../models/auther.model.js');
 // In the future the posts should be saved in the DB
 var posts = [];
+var users = new Map();
 
 // Get posts
 exports.getAllPosts = function(res) {
@@ -88,7 +89,13 @@ exports.updatePost = function(postId, comment, res){
     });
     // update all users
 }
-
+exports.updateUser = function(userName, color) {
+    users[userName] = color;
+}
+exports.getUsersPref = function(userName, color) {
+    // console.log('A')
+    return users;
+}
 function generateId(res){
     var number = Math.random() // 0.9394456857981651
     number.toString(36); // '0.xtis06h6'

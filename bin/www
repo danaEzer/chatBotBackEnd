@@ -25,9 +25,17 @@ var server = http.createServer(app);
  */
 var dataService = require('../services/data.service.js');
 var io = require('socket.io').listen(server);
+
+const usersColors = {};
+
 io.on('connection', (socket) => {
 
   console.log('---user connected---');
+  setTimeout(function(){ 
+    let userPref = dataService.getUsersPref();
+    socket.emit('post', { type: 'user-pref', text: userPref });
+   }, 3000);
+     
 
   socket.on('disconnect', function() {
       console.log('user disconnected');
@@ -49,8 +57,14 @@ io.on('connection', (socket) => {
       }
       io.emit('post', { type: 'update-post', text: obj });
     });
-});
+  });
 
+  socket.on('update-user', (message) => {
+    usersColors[message.userName] = message.color;
+    dataService.updateUser(message.userName, message.color);
+    let userPref = dataService.getUsersPref();
+    io.emit('post', { type: 'user-pref', text: userPref });
+  });
 });
 
 server.listen(port);
